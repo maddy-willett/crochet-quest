@@ -30,5 +30,6 @@ python main.py
 
 - Move left: **Left Arrow** or **A**
 - Move right: **Right Arrow** or **D**
+- Jump: **Space**, **Up Arrow**, or **W**
 - Close the game: close the game window
 - Stop from the terminal: **Control+C**

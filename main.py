@@ -13,8 +13,14 @@ DRESS_PURPLE = (132, 92, 156)
 SHOE_BROWN = (79, 52, 40)
 
 PLAYER_SPEED = 5
+GRAVITY =  0.8
+JUMP_STRENGTH = -15
+GROUND_Y = 393
+
 player_x = 100
 player_y = 393
+player_velocity_y = 0
+player_on_ground = True
 
 def draw_hero(screen, x, y):
     # Legs
@@ -67,6 +73,12 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
+    if event.type == pygame.KEYDOWN:
+            if event.key in (pygame.K_SPACE, pygame.K_UP, pygame.K_w):
+                if player_on_ground:
+                    player_velocity_y = JUMP_STRENGTH
+                    player_on_ground = False
+
     # 2. Update the game
     keys = pygame.key.get_pressed()
 
@@ -76,6 +88,16 @@ while running:
     if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
         player_x += PLAYER_SPEED
 
+    # Apply gravity.
+    player_velocity_y += GRAVITY
+    player_y += player_velocity_y
+
+    # Stop the heroine when she reaches the ground.
+    if player_y >= GROUND_Y:
+        player_y = GROUND_Y
+        player_velocity_y = 0
+        player_on_ground = True
+
     # Keep the heroine inside the window.
     player_x = max(0, min(player_x, WIDTH - 46))
 
@@ -83,7 +105,7 @@ while running:
     screen.fill(SKY_BLUE)
 
     pygame.draw.rect(screen, GREEN_GRASS, (0, 470, WIDTH, 70))
-    draw_hero(screen, player_x, player_y)
+    draw_hero(screen, int(player_x), int(player_y))
 
     # 4. Show the completed frame
     pygame.display.flip()
